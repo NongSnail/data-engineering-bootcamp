@@ -1,3 +1,6 @@
 #!/bin/bash
 
-curl -XPOST -H "Content-type: application/json" -d @dogs.json "https://getpantry.cloud/apiv1/pantry/<YOUR-PANTRY-ID>/basket/randomDogs"
+curl -PUT -H "Content-type: application/json" -d @data.json "https://getpantry.cloud/apiv1/pantry/baa7277c-e109-438e-bc9a-d657fbd0b192/basket/randomDogs"
+
+##baa7277c-e109-438e-bc9a-d657fbd0b192
+
