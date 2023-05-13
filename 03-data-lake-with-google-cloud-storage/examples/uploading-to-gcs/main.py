@@ -3,23 +3,24 @@ import os
 import sys
 
 from google.api_core import exceptions
-from google.cloud import storage
+from google.cloud import storage,bigquery
 from google.oauth2 import service_account
 
 
-def upload_blob(bucket_name, source_file_name, destination_blob_name):
+
+def upload_blob(bucket_name,source_file_name,destination_blob_name):
     """Uploads a file to the bucket."""
     # The ID of your GCS bucket
-    # bucket_name = "your-bucket-name"
-    # The path to your file to upload
-    # source_file_name = "local/path/to/file"
-    # The ID of your GCS object
-    # destination_blob_name = "storage-object-name"
+    # bucket_name = "narisara-100020"
+    # # The path to your file to upload
+    # source_file_name = "boxofficemojo_2023-04-24.csv"
+    # # The ID of your GCS object
+    # destination_blob_name = "2023-04-24/boxofficemojo"
 
-    keyfile = os.environ.get("KEYFILE_PATH")
+    keyfile = "myprojectde-384509-8bca472ed8b6.json"
     service_account_info = json.load(open(keyfile))
     credentials = service_account.Credentials.from_service_account_info(service_account_info)
-    project_id = "dataengineercafe"
+    project_id = "myprojectde-384509"
 
     storage_client = storage.Client(
         project=project_id,
@@ -50,9 +51,17 @@ def upload_blob(bucket_name, source_file_name, destination_blob_name):
     )
 
 
+   
+
+
 if __name__ == "__main__":
-    upload_blob(
-        bucket_name=sys.argv[1],
-        source_file_name=sys.argv[2],
-        destination_blob_name=sys.argv[3],
-    )
+    bucket_name = "deb-bootcamp-100020"
+    destination = "Greenery"
+    datas =  ["events","addresses","order-items","orders","products","promos","users"]
+
+    for x in datas:
+        filename = f"./data/{x}.csv"
+        blob_name = f"{destination}/{x}" 
+        upload_blob(bucket_name,filename,blob_name)
+
+    

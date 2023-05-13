@@ -3,6 +3,7 @@ import csv
 import scrapy
 from scrapy.crawler import CrawlerProcess
 
+import pandas as pd
 
 dt = "2023-04-24"
 URL = f"https://www.boxofficemojo.com/date/{dt}/"
@@ -14,7 +15,7 @@ class MySpider(scrapy.Spider):
 
     def parse(self, response):
         listing = response.css("table.a-bordered.a-horizontal-stripes.a-size-base.a-span12.mojo-body-table.mojo-table-annotated.mojo-body-table-compact > tr")
-
+        list_rank = []
         for each in listing:
             rank = each.css('td:first-child::text').get()
             rank_yesterday = each.css('td:nth-child(2)::text').get()
@@ -29,8 +30,8 @@ class MySpider(scrapy.Spider):
             no_of_days_in_release = each.css('td:nth-child(10)::text').get()
             distributor = each.css('td:nth-child(11) > a::text').get()
 
-            print(
-                rank,
+
+            x = [rank,
                 rank_yesterday,
                 release,
                 daily,
@@ -40,12 +41,10 @@ class MySpider(scrapy.Spider):
                 per_theaters_avg_gross,
                 gross_to_date,
                 no_of_days_in_release,
-                distributor,
-                sep=" | "
-            )
+                distributor]
 
-        # Write to CSV
-        # YOUR CODE HERE
+            list_rank.append(x)
+            
         header = [
             "rank",
             "rank_yesterday",
@@ -59,6 +58,12 @@ class MySpider(scrapy.Spider):
             "no_of_days_in_release",
             "distributor",
         ]
+
+        df = pd.DataFrame(list_rank, columns = header)
+        df.to_csv(f'boxofficemojo_{dt}.csv', index=False)
+
+
+
 
 
 if __name__ == "__main__":
